@@ -1,37 +1,20 @@
-from textnode import TextNode
-from htmlnode import HTMLNode, LeafNode, ParentNode
+import os
+import shutil
+
+from copystatic import copy_files_recursive
+
+
+dir_path_static = "./static"
+dir_path_public = "./public"
+
 
 def main():
-    textnode = TextNode("This is a text node", "bold", "https://www.boot.dev")
-    htmlnode = HTMLNode(
-            tag="p", value="test text", props={
-            "href": "https://www.google.com",
-            "target": "_blank"}
-            )
-    parentnode1 = ParentNode(
-                "p",
-                [
-                    LeafNode("b", "Bold text"),
-                    LeafNode(None, "Normal text"),
-                    LeafNode("i", "italic text"),
-                    LeafNode(None, "Normal text"),
-                ],
-            )
-    parentnode5 = ParentNode(
-                "p",
-                [
-                    parentnode1,
-                    LeafNode(None, "Normal text"),
-                    LeafNode("i", "italic text"),
-                    LeafNode(None, "Normal text"),
-                ],
-                {
-            "href": "https://www.google.com",
-            "target": "_blank"
-            }
-            )
-    print(parentnode5.to_html())
-    return
+    print("Deleting public directory...")
+    if os.path.exists(dir_path_public):
+        shutil.rmtree(dir_path_public)
 
-if __name__ == "__main__":
-    main()
+    print("Copying static files to public directory...")
+    copy_files_recursive(dir_path_static, dir_path_public)
+
+
+main()
