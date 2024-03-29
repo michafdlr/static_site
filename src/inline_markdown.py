@@ -92,3 +92,12 @@ def split_nodes_link(old_nodes):
                     cur_nodes.append(TextNode(original_text,text_type_text))
                 new_nodes += cur_nodes
     return new_nodes
+
+def text_to_textnodes(text):
+    node = TextNode(text, text_type_text)
+    new_nodes = [node]
+    for text_type, delimiter in zip([text_type_bold, text_type_italic, text_type_code], delimiters):
+        new_nodes = split_nodes_delimiter(new_nodes, delimiter, text_type)
+    return split_nodes_link(split_nodes_image(new_nodes))
+
+print(text_to_textnodes("This is **text** with an *italic* word and a `code block` and an ![image](https://i.imgur.com/zjjcJKZ.png) and a [link](https://boot.dev)"))
